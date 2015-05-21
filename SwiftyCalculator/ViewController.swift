@@ -24,6 +24,9 @@ class ViewController: UIViewController {
         }
     }
 
+    @IBAction func enter(sender: UIButton) {
+        userIsInTheMiddleOfTypingNumber = false
+    }
 
 }
 
