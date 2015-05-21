@@ -31,30 +31,21 @@ class ViewController: UIViewController {
         }
         
         switch operation {
-        case "×":
-            if operandStack.count >= 2 {
-                displayValue = operandStack.removeLast() * operandStack.removeLast()
-                enter()
-            }
-        case "÷":
-            if operandStack.count >= 2 {
-                displayValue = operandStack.removeLast() / operandStack.removeLast()
-                enter()
-            }
-        case "+":
-            if operandStack.count >= 2 {
-                displayValue = operandStack.removeLast() + operandStack.removeLast()
-                enter()
-            }
-        case "−":
-            if operandStack.count >= 2 {
-                displayValue = operandStack.removeLast() - operandStack.removeLast()
-                enter()
-            }
+        case "×": performOperation {$0 * $1}
+        case "÷": performOperation {$1 / $0}
+        case "+": performOperation {$0 + $1}
+        case "−": performOperation {$1 - $0}
         default:break
         }
     }
-
+    
+    func performOperation(operation: (Double, Double) -> Double) {
+        if operandStack.count >= 2 {
+            displayValue = operation(operandStack.removeLast(),operandStack.removeLast())
+            enter()
+        }
+    }
+    
     var operandStack = Array<Double>()
     
     @IBAction func enter() {
