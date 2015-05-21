@@ -24,8 +24,22 @@ class ViewController: UIViewController {
         }
     }
 
+    var operandStack = Array<Double>()
+    
     @IBAction func enter(sender: UIButton) {
         userIsInTheMiddleOfTypingNumber = false
+        operandStack.append(displayValue)
+        println("operandStack = \(operandStack)")
+    }
+    
+    var displayValue:Double {
+        get{
+            return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
+        }
+        set {
+            display.text = "\(newValue)"
+            userIsInTheMiddleOfTypingNumber = false
+        }
     }
 
 }
