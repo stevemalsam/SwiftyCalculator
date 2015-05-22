@@ -9,21 +9,40 @@
 import Foundation
 
 class CalculatorBrain {
-    private enum Op {
+    private enum Op : Printable {
         case Operand(Double)
         case UnaryOperator(String, Double -> Double)
         case BinaryOperator(String, (Double, Double) -> Double)
+        
+        var description: String {
+            get {
+                switch self {
+                case .Operand(let operand):
+                    return "\(operand)"
+                    
+                case .UnaryOperator(let symbol, _):
+                    return symbol
+                    
+                case .BinaryOperator(let symbol, _):
+                    return symbol
+                }
+            }
+        }
     }
     
     private var opStack = [Op]()
     private var knownOps = [String:Op]()
     
     init() {
-        knownOps["×"] = Op.BinaryOperator("×") {$0 * $1}
-        knownOps["÷"] = Op.BinaryOperator("÷") {$1 / $0}
-        knownOps["+"] = Op.BinaryOperator("+") {$0 + $1}
-        knownOps["−"] = Op.BinaryOperator("−") {$1 - $0}
-        knownOps["√"] = Op.UnaryOperator("√") {sqrt($0)}
+        func learnOp(op: Op) {
+            knownOps[op.description] = op
+        }
+        
+        learnOp(Op.BinaryOperator("×") {$0 * $1})
+        learnOp(Op.BinaryOperator("÷") {$1 / $0})
+        learnOp(Op.BinaryOperator("+") {$0 + $1})
+        learnOp(Op.BinaryOperator("−") {$1 - $0})
+        learnOp(Op.UnaryOperator("√") {sqrt($0)})
     }
     
     private func evaluate(ops: [Op]) -> (result: Double?, remainingOps: [Op]) {
@@ -57,16 +76,20 @@ class CalculatorBrain {
     
     func evaluate() -> Double? {
         let (result, remainder) = evaluate(opStack);
+        println("\(opStack) = \(result) with \(remainder) left over")
         return result
     }
     
-    func pushOperand(operand: Double) {
+    func pushOperand(operand: Double) -> Double? {
         opStack.append(Op.Operand(operand))
+        return evaluate()
     }
     
-    func performOperation(symbol: String) {
+    func performOperation(symbol: String) -> Double? {
         if let operation = knownOps[symbol] {
             opStack.append(operation)
         }
+        
+        return evaluate()
     }
 }
