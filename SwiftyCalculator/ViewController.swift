@@ -12,31 +12,17 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var display: UILabel!
     var userIsInTheMiddleOfTypingNumber : Bool = false
-    var userHasEnteredADecimal = false
     var brain = CalculatorBrain()
 
     @IBAction func appendDigit(sender: UIButton) {
         let digit = sender.currentTitle!
         
+        
         if userIsInTheMiddleOfTypingNumber {
-            if digit == "." {
-                if !userHasEnteredADecimal {
-                    display.text = display.text! + digit
-                    userHasEnteredADecimal = true
-                    userIsInTheMiddleOfTypingNumber = true
-                    return
-                } else {
-                    return
-                }
+            if digit != "." || display.text!.rangeOfString(".") == nil {
+                display.text = display.text! + digit
             }
-
-            display.text = display.text! + digit
         } else {
-            if digit == "." {
-                if !userHasEnteredADecimal {
-                    userHasEnteredADecimal = true
-                }
-            }
             display.text = digit
             userIsInTheMiddleOfTypingNumber = true
         }
@@ -56,7 +42,6 @@ class ViewController: UIViewController {
 
     @IBAction func enter() {
         userIsInTheMiddleOfTypingNumber = false
-        userHasEnteredADecimal = false
         if let result = brain.pushOperand(displayValue) {
             displayValue = result
         }
