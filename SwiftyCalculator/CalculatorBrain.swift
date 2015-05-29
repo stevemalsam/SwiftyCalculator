@@ -11,6 +11,7 @@ import Foundation
 class CalculatorBrain {
     private enum Op : Printable {
         case Operand(Double)
+        case ConstantOperator(String, Double)
         case UnaryOperator(String, Double -> Double)
         case BinaryOperator(String, (Double, Double) -> Double)
         
@@ -19,6 +20,9 @@ class CalculatorBrain {
                 switch self {
                 case .Operand(let operand):
                     return "\(operand)"
+                    
+                case .ConstantOperator(let symbol, _):
+                    return symbol
                     
                 case .UnaryOperator(let symbol, _):
                     return symbol
@@ -45,6 +49,8 @@ class CalculatorBrain {
         learnOp(Op.UnaryOperator("√") {sqrt($0)})
         learnOp(Op.UnaryOperator("sin") {sin($0)})
         learnOp(Op.UnaryOperator("cos") {cos($0)})
+        learnOp(Op.ConstantOperator("π", M_PI))
+        
     }
     
     private func evaluate(ops: [Op]) -> (result: Double?, remainingOps: [Op]) {
@@ -56,6 +62,9 @@ class CalculatorBrain {
             switch op {
             case .Operand(let operand):
                 return(operand, remainingOps)
+                
+            case .ConstantOperator(_, let value):
+                return(value, remainingOps)
             
             case .UnaryOperator(_, let operation):
                 let operandEvaluation = evaluate(remainingOps)
