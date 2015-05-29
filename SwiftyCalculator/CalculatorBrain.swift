@@ -34,6 +34,12 @@ class CalculatorBrain {
         }
     }
     
+    var stackState: String {
+        get {
+            return join("\n", opStack.map({$0.description}))
+        }
+    }
+    
     private var opStack = [Op]()
     private var knownOps = [String:Op]()
     
