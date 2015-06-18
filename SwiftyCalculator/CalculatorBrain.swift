@@ -109,4 +109,8 @@ class CalculatorBrain {
         
         return evaluate()
     }
+    
+    func clear() {
+        opStack.removeAll()
+    }
 }

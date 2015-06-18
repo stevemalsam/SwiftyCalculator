@@ -29,6 +29,11 @@ class ViewController: UIViewController {
         }
     }
 
+    @IBAction func clear(sender: UIButton) {
+        brain.clear()
+        displayValue = 0
+    }
+    
     @IBAction func operate(sender: UIButton) {
         if userIsInTheMiddleOfTypingNumber {
             enter()
