@@ -159,6 +159,7 @@
 		0A13CF2F1B0593A300BF2CDB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Basting Shoebox Software";
 				TargetAttributes = {
